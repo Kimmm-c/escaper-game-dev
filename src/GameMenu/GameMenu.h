@@ -1,3 +1,6 @@
+#ifndef GAMEMENU_H
+#define GAMEMENU_H
+
 #include <string>
 using namespace std;
 
@@ -13,3 +16,5 @@ public:
 private:
     string getMenuText() const;
 };
+
+#endif

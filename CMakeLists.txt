@@ -7,4 +7,6 @@ add_executable(escaper_text_based_game src/main.cpp
         src/Game/Game.h
         src/Game/Game.cpp
         src/GameMenu/GameMenu.h
-        src/GameMenu/GameMenu.cpp)
+        src/GameMenu/GameMenu.cpp
+        src/GameSettings/GameSettings.h
+        src/GameSettings/GameSettings.cpp)

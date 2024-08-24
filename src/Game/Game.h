@@ -1,7 +1,14 @@
+#ifndef GAME_H
+#define GAME_H
+
 #include "../GameMenu/GameMenu.h"
+#include "../GameSettings/GameSettings.h"
 
 class Game {
-    GameMenu* mainMenu;
+    const GameMenu* mainMenu;
+    const GameMenu* difficultyMenu;
+    const GameMenu* mapMenu;
+    GameSettings* gameSettings;
 //    GameOptionMenu optionMenu;
 //    Player player;
 //    Enemy* enemies;
@@ -25,3 +32,5 @@ public:
 private:
 
 };
+
+#endif

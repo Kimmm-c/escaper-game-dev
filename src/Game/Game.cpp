@@ -11,13 +11,24 @@ Game::Game()
                            "4. Difficulty\n"
                            "5. Map Grid\n"
                            "6. Exit"))
-{ }
+, difficultyMenu(new GameMenu(3, "Please choose one of the following options to proceed:\n"
+                                 "1. Easy\n"
+                                 "2. Normal\n"
+                                 "3. Hard"))
+, mapMenu(new GameMenu(3, "Please choose one of the following options to proceed:\n"
+                          "1. 5x5\n"
+                          "2. 10x10\n"
+                          "3. 15x15"))
+, gameSettings(new GameSettings())
+{}
 //, optionMenu(new GameOptionMenu())
 //, collisionSystem(new CollisionSystem())
 //, renderSystem(new RenderSystem())
 
 Game::~Game() {
     delete mainMenu;
+    delete difficultyMenu;
+    delete mapMenu;
 //    delete optionMenu;
 //    delete collisionSystem;
 //    delete renderSystem;
@@ -49,10 +60,6 @@ void Game::displayGameGuide() {
 
 };
 
-void Game::setDifficultyLevel() {
-
-};
-
 void Game::config() {
 
 };
@@ -80,23 +87,21 @@ void Game::run() {
 
     while (mainMenuSelection == 1) {
         displayGameGuide();
-        mainMenuSelection = getMainMenuSelection();
+        mainMenuSelection = getUserSelection(mainMenu);
     }
 
     while (mainMenuSelection == 4) {
-        // prompt for difficulty selection
+        int difficulty = getUserSelection(difficultyMenu);
+        gameSettings->setDifficulty(difficulty);
 
-        // set difficulty level
-
-        mainMenuSelection = getMainMenuSelection();
+        mainMenuSelection = getUserSelection(mainMenu);
     }
 
     while (mainMenuSelection == 5) {
-        // prompt for map dimension
+        int map = getUserSelection(mapMenu);
+        gameSettings->setMapGrid(map);
 
-        // set map dimension
-
-        mainMenuSelection = getMainMenuSelection();
+        mainMenuSelection = getUserSelection(mainMenu);
     }
 
     switch (mainMenuSelection) {
