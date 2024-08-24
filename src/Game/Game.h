@@ -14,9 +14,6 @@ public:
     Game();
     ~Game();
     int getUserSelection(const GameMenu* menu);
-    int getMainMenuSelection();
-    int getDifficultySelection();
-    int getMapSelection();
     void displayGameGuide();
     void setDifficultyLevel();
     void config();
