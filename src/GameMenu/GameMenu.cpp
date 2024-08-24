@@ -8,11 +8,11 @@ int GameMenu::getMenuOption() const {
     return menuOption;
 }
 
-string GameMenu::getMenuText() {
+string GameMenu::getMenuText() const {
     return text;
 }
 
-void GameMenu::displayMenu() {
+void GameMenu::displayMenu() const {
     cout << getMenuText() <<endl;
 }
 

@@ -13,6 +13,7 @@ class Game {
 public:
     Game();
     ~Game();
+    int getUserSelection(const GameMenu* menu);
     int getMainMenuSelection();
     int getDifficultySelection();
     int getMapSelection();

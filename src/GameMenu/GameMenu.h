@@ -7,9 +7,9 @@ class GameMenu {
 
 public:
     GameMenu(int option, string text);
-    void displayMenu();
+    void displayMenu() const;
+    int getMenuOption() const;
 
 private:
-    int getMenuOption() const;
-    string getMenuText();
+    string getMenuText() const;
 };

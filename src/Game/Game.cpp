@@ -11,6 +11,7 @@ Game::Game()
                            "4. Difficulty\n"
                            "5. Map Grid\n"
                            "6. Exit"))
+{ }
 //, optionMenu(new GameOptionMenu())
 //, collisionSystem(new CollisionSystem())
 //, renderSystem(new RenderSystem())
@@ -22,38 +23,27 @@ Game::~Game() {
 //    delete renderSystem;
 };
 
-int Game::getMainMenuSelection() {
+int Game::getUserSelection(const GameMenu* menu) {
     int menuSelection;
-    cout << mainMenu->getMenuText() << endl;
+    int upperBound = menu->getMenuOption();
+
+    menu->displayMenu();
 
     cin >> menuSelection;
 
-    while (cin.fail() or menuSelection < 1 or menuSelection > 6) {
+    while (cin.fail() or menuSelection < 1 or menuSelection > upperBound) {
+        // Use cin.clear to reset the fail flag to original state.
+        // Use cin.ignore to clear out the buffer
+        // (numeric_limits<streamsize>::max(), '\n') clears all the characters in the buffer up to and including \n
+        // OR the entire buffer size (streamsize).
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << "Invalid input. Please enter a number from 1-6" << endl;
         cin >> menuSelection;
     }
 
     return menuSelection;
-};
-
-int Game::getDifficultySelection() {
-    int difficulty;
-    cout << "Please choose one of the following options to proceed:\n"
-            "1. Ease\n"
-            "2. Normal\n"
-            "3. Hard" << endl;
-
-    cin >> difficulty;
-
-    while (cin.fail() or difficulty < 1 or difficulty > 3) {
-        cout << "Invalid input. Please enter a number from 1-3" << endl;
-        cin >> difficulty;
-    }
-
-    return difficulty;
 }
-
-
 
 void Game::displayGameGuide() {
 
@@ -84,31 +74,32 @@ void Game::run() {
     int difficulty;
     int mapGrid;
 
-    // Prompt for menu selection
-    int menuSelection = getMainMenuSelection();
+    // Prompt for main menu selection
+    int mainMenuSelection = getUserSelection(mainMenu);
+    cout << "selection: " << mainMenuSelection << endl;
 
-    while (menuSelection == 1) {
+    while (mainMenuSelection == 1) {
         displayGameGuide();
-        menuSelection = getMainMenuSelection();
+        mainMenuSelection = getMainMenuSelection();
     }
 
-    while (menuSelection == 4) {
+    while (mainMenuSelection == 4) {
         // prompt for difficulty selection
 
         // set difficulty level
 
-        menuSelection = getMainMenuSelection();
+        mainMenuSelection = getMainMenuSelection();
     }
 
-    while (menuSelection == 5) {
+    while (mainMenuSelection == 5) {
         // prompt for map dimension
 
         // set map dimension
 
-        menuSelection = getMainMenuSelection();
+        mainMenuSelection = getMainMenuSelection();
     }
 
-    switch (menuSelection) {
+    switch (mainMenuSelection) {
         case 2:
             // config game settings
             break;
@@ -120,7 +111,7 @@ void Game::run() {
             break;
 
         case 6:
-            return 0;
+            return;
     }
 
     // Game loop
