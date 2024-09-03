@@ -4,23 +4,22 @@
 using namespace std;
 
 Game::Game()
-: mainMenu(new GameMenu(6, "Please choose one of the following options to proceed:\n"
-                           "1. Game Guide\n"
-                           "2. Start a New Game\n"
-                           "3. Load Existing Game\n"
-                           "4. Difficulty\n"
-                           "5. Map Grid\n"
-                           "6. Exit"))
-, difficultyMenu(new GameMenu(3, "Please choose one of the following options to proceed:\n"
-                                 "1. Easy\n"
-                                 "2. Normal\n"
-                                 "3. Hard"))
-, mapMenu(new GameMenu(3, "Please choose one of the following options to proceed:\n"
-                          "1. 5x5\n"
-                          "2. 10x10\n"
-                          "3. 15x15"))
-, gameSettings(new GameSettings())
-{}
+        : mainMenu(new GameMenu(6, "Please choose one of the following options to proceed:\n"
+                                   "1. Game Guide\n"
+                                   "2. Start a New Game\n"
+                                   "3. Load Existing Game\n"
+                                   "4. Difficulty\n"
+                                   "5. Map Grid\n"
+                                   "6. Exit")),
+          difficultyMenu(new GameMenu(3, "Please choose one of the following options to proceed:\n"
+                                         "1. Easy\n"
+                                         "2. Normal\n"
+                                         "3. Hard")),
+          mapMenu(new GameMenu(3, "Please choose one of the following options to proceed:\n"
+                                  "1. 5x5\n"
+                                  "2. 10x10\n"
+                                  "3. 15x15")),
+          gameSettings(new GameSettings()) {}
 //, optionMenu(new GameOptionMenu())
 //, collisionSystem(new CollisionSystem())
 //, renderSystem(new RenderSystem())
@@ -29,12 +28,13 @@ Game::~Game() {
     delete mainMenu;
     delete difficultyMenu;
     delete mapMenu;
+    delete gameSettings;
 //    delete optionMenu;
 //    delete collisionSystem;
 //    delete renderSystem;
 };
 
-int Game::getUserSelection(const GameMenu* menu) {
+int Game::getUserSelection(const GameMenu *menu) {
     int menuSelection;
     int upperBound = menu->getMenuOption();
 
@@ -85,24 +85,32 @@ void Game::run() {
     int mainMenuSelection = getUserSelection(mainMenu);
     cout << "selection: " << mainMenuSelection << endl;
 
-    while (mainMenuSelection == 1) {
-        displayGameGuide();
+    while (mainMenuSelection == 1 or mainMenuSelection == 4 or mainMenuSelection == 5) {
+        if (mainMenuSelection == 1) {
+            displayGameGuide();
+        } else if (mainMenuSelection == 4) {
+            int difficulty = getUserSelection(difficultyMenu);
+            gameSettings->setDifficulty(difficulty);
+        } else if (mainMenuSelection == 5) {
+            int map = getUserSelection(mapMenu);
+            gameSettings->setMapGrid(map);
+        }
         mainMenuSelection = getUserSelection(mainMenu);
     }
 
-    while (mainMenuSelection == 4) {
-        int difficulty = getUserSelection(difficultyMenu);
-        gameSettings->setDifficulty(difficulty);
-
-        mainMenuSelection = getUserSelection(mainMenu);
-    }
-
-    while (mainMenuSelection == 5) {
-        int map = getUserSelection(mapMenu);
-        gameSettings->setMapGrid(map);
-
-        mainMenuSelection = getUserSelection(mainMenu);
-    }
+//    while (mainMenuSelection == 4) {
+//        int difficulty = getUserSelection(difficultyMenu);
+//        gameSettings->setDifficulty(difficulty);
+//
+//        mainMenuSelection = getUserSelection(mainMenu);
+//    }
+//
+//    while (mainMenuSelection == 5) {
+//        int map = getUserSelection(mapMenu);
+//        gameSettings->setMapGrid(map);
+//
+//        mainMenuSelection = getUserSelection(mainMenu);
+//    }
 
     switch (mainMenuSelection) {
         case 2:
