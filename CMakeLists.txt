@@ -17,4 +17,6 @@ add_executable(escaper_text_based_game src/main.cpp
         src/Player/Player.h
         src/Player/Player.cpp
         src/Enemy/Enemy.cpp
-        src/Enemy/Enemy.h)
+        src/Enemy/Enemy.h
+        src/RenderEngine/RenderEngine.h
+        src/RenderEngine/RenderEngine.cpp)
