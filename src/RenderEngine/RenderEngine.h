@@ -7,6 +7,7 @@
 
 class RenderEngine {
     void drawMap(Map map, Player player, BaseCharacter* enemies);
+    void renderPlayerHealth(Player player);
 };
 
 #endif
