@@ -98,20 +98,6 @@ void Game::run() {
         mainMenuSelection = getUserSelection(mainMenu);
     }
 
-//    while (mainMenuSelection == 4) {
-//        int difficulty = getUserSelection(difficultyMenu);
-//        gameSettings->setDifficulty(difficulty);
-//
-//        mainMenuSelection = getUserSelection(mainMenu);
-//    }
-//
-//    while (mainMenuSelection == 5) {
-//        int map = getUserSelection(mapMenu);
-//        gameSettings->setMapGrid(map);
-//
-//        mainMenuSelection = getUserSelection(mainMenu);
-//    }
-
     switch (mainMenuSelection) {
         case 2:
             // config game settings
