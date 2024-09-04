@@ -89,11 +89,11 @@ void Game::run() {
         if (mainMenuSelection == 1) {
             displayGameGuide();
         } else if (mainMenuSelection == 4) {
-            int difficulty = getUserSelection(difficultyMenu);
+            difficulty = getUserSelection(difficultyMenu);
             gameSettings->setDifficulty(difficulty);
-        } else if (mainMenuSelection == 5) {
-            int map = getUserSelection(mapMenu);
-            gameSettings->setMapGrid(map);
+        } else {
+            mapGrid = getUserSelection(mapMenu);
+            gameSettings->setMapGrid(mapGrid);
         }
         mainMenuSelection = getUserSelection(mainMenu);
     }

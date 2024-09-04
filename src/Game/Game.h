@@ -3,12 +3,14 @@
 
 #include "../GameMenu/GameMenu.h"
 #include "../GameSettings/GameSettings.h"
+#include "../Map/Map.h"
 
 class Game {
     const GameMenu* mainMenu;
     const GameMenu* difficultyMenu;
     const GameMenu* mapMenu;
     GameSettings* gameSettings;
+    Map* map;
 //    GameOptionMenu optionMenu;
 //    Player player;
 //    Enemy* enemies;
