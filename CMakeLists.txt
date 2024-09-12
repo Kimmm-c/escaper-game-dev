@@ -21,4 +21,6 @@ add_executable(escaper_text_based_game src/main.cpp
         src/RenderEngine/RenderEngine.h
         src/RenderEngine/RenderEngine.cpp
         src/PhysicEngine/PhysicEngine.h
-        src/PhysicEngine/PhysicEngine.cpp)
+        src/PhysicEngine/PhysicEngine.cpp
+        src/Utils/Utils.h
+        src/Utils/Utils.cpp)
