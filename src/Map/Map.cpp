@@ -38,7 +38,7 @@ Map::Map(uint8_t w, uint8_t h)
     }
 
     cout << "{" << endl;
-    for (const pair<uint8_t, uint8_t> vertex : winningPath) {
+    for (const pair<uint8_t, uint8_t> vertex: winningPath) {
         cout << "{" << vertex.first << ", " << vertex.second << "}" << endl;
     }
 
@@ -69,6 +69,30 @@ vector<pair<uint8_t, uint8_t>> Map::getNeighbours(pair<uint8_t, uint8_t> &vertex
                                                  make_pair(vertex.first, vertex.second - 1),
                                                  make_pair(vertex.first, vertex.second + 1)};
     return neighbours;
+}
+
+void Map::filterByVisit(vector<pair<uint8_t, uint8_t>> &neighbors) {
+    uint8_t i = 0;
+
+    while (i < neighbors.size()) {
+        if (isVisited(neighbors[i], winningPath)) {
+            neighbors.erase(neighbors.begin() + i);
+        } else {
+            i++;
+        }
+    }
+}
+
+void Map::filterByCoordinate(vector<pair<uint8_t, uint8_t>> &neighbors) {
+    uint8_t i = 0;
+
+    while (i < neighbors.size()) {
+        if (!isValidCoordinate(neighbors[i], width, height)) {
+            neighbors.erase(neighbors.begin() + i);
+        } else {
+            i++;
+        }
+    }
 }
 
 bool Map::isValidCoordinate(pair<uint8_t, uint8_t> &vertex, uint8_t width, uint8_t height) const {
