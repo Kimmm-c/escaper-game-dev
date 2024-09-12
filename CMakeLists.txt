@@ -10,14 +10,14 @@ add_executable(escaper_text_based_game src/main.cpp
         src/GameMenu/GameMenu.cpp
         src/GameSettings/GameSettings.h
         src/GameSettings/GameSettings.cpp
-        src/Map/Map.cpp
         src/Map/Map.h
+        src/Map/Map.cpp
         src/BaseCharacter/BaseCharacter.h
         src/BaseCharacter/BaseCharacter.cpp
         src/Player/Player.h
         src/Player/Player.cpp
-        src/Enemy/Enemy.cpp
         src/Enemy/Enemy.h
+        src/Enemy/Enemy.cpp
         src/RenderEngine/RenderEngine.h
         src/RenderEngine/RenderEngine.cpp
         src/PhysicEngine/PhysicEngine.h

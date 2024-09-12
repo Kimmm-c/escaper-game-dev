@@ -22,7 +22,7 @@ public:
 
     const map<pair<uint8_t, uint8_t>, vector<pair<uint8_t, uint8_t>>> &getGraph() const;
     const set<pair<uint8_t, uint8_t>> &getWinningPath() const;
-    vector<pair<uint8_t, uint8_t>> &getNeighbours(pair<uint8_t, uint8_t>& vertex) const;
+    vector<pair<uint8_t, uint8_t>> getNeighbours(pair<uint8_t, uint8_t>& vertex) const;
 
     bool isValidCoordinate(pair<uint8_t, uint8_t> &vertex, uint8_t width, uint8_t height) const;
 
