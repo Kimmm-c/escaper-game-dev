@@ -6,7 +6,7 @@ using namespace std;
 int main() {
 //    Game game = Game();
 //    game.run();
-    Map map(3, 3);
+    Map map(7, 7);
 
     return 0;
 }
