@@ -16,10 +16,11 @@ Map::Map(uint8_t w, uint8_t h)
     // Construct the winning path
     vector<bool> visit = {true, false};
     pair<uint8_t, uint8_t> currentVertex = {0, 0};
+    pair<uint8_t, uint8_t> dest = {width - 1, height - 1};
 
     winningPath.insert(currentVertex);
 
-    while (currentVertex.first != width - 1 && currentVertex.second != height - 1) {
+    while (currentVertex != dest) {
         vector<pair<uint8_t, uint8_t>> neighbors = getNeighbours(currentVertex);
 
         // Filter out invalid neighbors
@@ -29,17 +30,19 @@ Map::Map(uint8_t w, uint8_t h)
         uint8_t neighbourNumber = neighbors.size();
         for (uint8_t i = 0; i < neighbourNumber; i++) {
             // Randomly determine to visit the neighbor or not
-            bool isVisited = Utils::getRandomSelection<bool>(visit);
-            if (isVisited || i == neighbourNumber - 1) {
+            if (Utils::getRandomSelection<bool>(visit) || i == neighbourNumber - 1 || neighbors[i] == dest) {
                 // Add neighbour to the path
                 winningPath.insert(neighbors[i]);
+                graph[currentVertex].push_back(neighbors[i]);
+                graph[neighbors[i]].push_back(currentVertex);
                 currentVertex = neighbors[i];
+                break;
             }
         }
     }
 
     cout << "{" << endl;
-    for (const pair<uint8_t, uint8_t>& vertex : winningPath) {
+    for (const pair<uint8_t, uint8_t> &vertex: winningPath) {
         cout << "{" << static_cast<int>(vertex.first) << ", "
              << static_cast<int>(vertex.second) << "}" << endl;
     }
