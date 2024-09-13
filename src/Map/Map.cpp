@@ -29,7 +29,7 @@ Map::Map(uint8_t w, uint8_t h)
         uint8_t neighbourNumber = neighbors.size();
         for (uint8_t i = 0; i < neighbourNumber; i++) {
             // Randomly determine to visit the neighbor or not
-            if (Utils::getRandomSelection(visit) || i == neighbourNumber - 1) {
+            if (Utils::getRandomSelection<bool>(visit) || i == neighbourNumber - 1) {
                 // Add neighbour to the path
                 winningPath.insert(neighbors[i]);
                 currentVertex = neighbors[i];
@@ -38,9 +38,11 @@ Map::Map(uint8_t w, uint8_t h)
     }
 
     cout << "{" << endl;
-    for (const pair<uint8_t, uint8_t> vertex: winningPath) {
-        cout << "{" << vertex.first << ", " << vertex.second << "}" << endl;
+    for (const pair<uint8_t, uint8_t>& vertex : winningPath) {
+        cout << "{" << static_cast<int>(vertex.first) << ", "
+             << static_cast<int>(vertex.second) << "}" << endl;
     }
+    cout << "}" << endl;
 
     // Construct a graph by connecting the path to the remaining points
 

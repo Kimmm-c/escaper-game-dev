@@ -3,6 +3,9 @@ project(escaper_text_based_game)
 
 set(CMAKE_CXX_STANDARD 17)
 
+# Add include directories
+include_directories(${CMAKE_SOURCE_DIR}/src)
+
 add_executable(escaper_text_based_game src/main.cpp
         src/Game/Game.h
         src/Game/Game.cpp
