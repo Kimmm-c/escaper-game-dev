@@ -29,7 +29,8 @@ Map::Map(uint8_t w, uint8_t h)
         uint8_t neighbourNumber = neighbors.size();
         for (uint8_t i = 0; i < neighbourNumber; i++) {
             // Randomly determine to visit the neighbor or not
-            if (Utils::getRandomSelection<bool>(visit) || i == neighbourNumber - 1) {
+            bool isVisited = Utils::getRandomSelection<bool>(visit);
+            if (isVisited || i == neighbourNumber - 1) {
                 // Add neighbour to the path
                 winningPath.insert(neighbors[i]);
                 currentVertex = neighbors[i];
