@@ -5,8 +5,8 @@
 Map::Map(uint8_t w, uint8_t h)
         : width(w), height(h) {
     // Construct a graph with disconnected vertices
-    for (uint8_t y; y < height; y++) {
-        for (uint8_t x; x < width; x++) {
+    for (uint8_t y = 0; y < height; y++) {
+        for (uint8_t x = 0; x < width; x++) {
             // emplace allows constructing a pair and a vector directly inside the map
             // without creating temporary objects.
             graph.emplace(make_pair(x, y), vector<pair<uint8_t, uint8_t>>{});
@@ -52,15 +52,49 @@ Map::Map(uint8_t w, uint8_t h)
     /*
      * Construct a graph by connecting the path to the remaining points
      */
-    uint8_t index = 0;
-    uint8_t graphSize = width * height;
-    map<pair<uint8_t, uint8_t>, vector<pair<uint8_t, uint8_t>>>::iterator graphIt = graph.begin();
 
-    while (index < graphSize) {
+    for (auto &graphIt: graph) {
+        pair<uint8_t, uint8_t> currentVertex = graphIt.first;
 
+        /*
+         * If the current vertex is disconnected, visit the next valid neighbour until it hits a connected neighbour.
+         */
+        while (isDisconnected(currentVertex)) {
+            vector<pair<uint8_t, uint8_t>> neighbours = getNeighbours(currentVertex);
+            filterByCoordinate(neighbours);
+            filterByDisconnection(neighbours);
+
+            uint8_t neighbourSize = neighbours.size();
+
+            for (uint8_t i = 0; i < neighbourSize; i++) {
+                if (Utils::getRandomSelection<bool>(visit) || i == neighbourSize - 1) {
+                    bool isDisconnectedNeighbour = isDisconnected(neighbours[i]);
+                    graph[currentVertex].push_back(neighbours[i]);
+                    graph[neighbours[i]].push_back(currentVertex);
+
+                    if (isDisconnectedNeighbour) {
+                        currentVertex = neighbours[i];
+                    }
+
+                    break;
+                }
+            }
+        }
     }
 
+    cout << "{" << endl;
+    for (auto &graphIt: graph) {
+        const pair<uint8_t, uint8_t> &vertex = graphIt.first;
+        const vector<pair<uint8_t, uint8_t>> &connectedNeighbors = graphIt.second;
 
+        cout << "(" << static_cast<int>(vertex.first) << ", " << static_cast<int>(vertex.second) << "): ";
+        cout << "[";
+        for (pair<uint8_t, uint8_t> neighbour: connectedNeighbors) {
+            cout << "(" << static_cast<int>(neighbour.first) << ", " << static_cast<int>(neighbour.second) << "), ";
+        }
+        cout << "]," << endl;
+    }
+    cout << "}" << endl;
 }
 
 void Map::draw() {
@@ -80,7 +114,7 @@ const set<pair<uint8_t, uint8_t>> &Map::getWinningPath() const {
     return winningPath;
 }
 
-vector<pair<uint8_t, uint8_t>> Map::getNeighbours(pair<uint8_t, uint8_t> &vertex) const {
+vector<pair<uint8_t, uint8_t>> Map::getNeighbours(const pair<uint8_t, uint8_t> &vertex) const {
     vector<pair<uint8_t, uint8_t>> neighbours = {make_pair(vertex.first - 1, vertex.second),
                                                  make_pair(vertex.first + 1, vertex.second),
                                                  make_pair(vertex.first, vertex.second - 1),
@@ -124,6 +158,18 @@ void Map::filterByDeadEnd(pair<uint8_t, uint8_t> &currentVertex, vector<pair<uin
     }
 }
 
+void Map::filterByDisconnection(vector<pair<uint8_t, uint8_t>> &neighbors) {
+    uint8_t i = 0;
+
+    while (i < neighbors.size()) {
+        if (isDisconnected(neighbors[i])) {
+            neighbors.erase(neighbors.begin() + i);
+        } else {
+            i++;
+        }
+    }
+}
+
 bool Map::isValidCoordinate(pair<uint8_t, uint8_t> &vertex, uint8_t width, uint8_t height) const {
     return !(vertex.first < 0
              || vertex.first >= width
@@ -149,6 +195,6 @@ bool Map::isDeadEnd(pair<uint8_t, uint8_t> &currentVertex, pair<uint8_t, uint8_t
            || (currentVertex.first == 0 && neighbor.second == currentVertex.second - 1);
 }
 
-bool Map::isDisconnected(pair<uint8_t, uint8_t> &vertex) {
+bool Map::isDisconnected(const pair<uint8_t, uint8_t> &vertex) {
     return graph[vertex].empty();
 }
