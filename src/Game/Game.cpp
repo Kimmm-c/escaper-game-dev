@@ -1,7 +1,9 @@
 #include <iostream>
 #include "Game.h"
+#include "../Enums/Enums.h"
 
 using namespace std;
+using namespace Enums;
 
 Game::Game()
         : mainMenu(new GameMenu(6, "Please choose one of the following options to proceed:\n"
@@ -61,7 +63,19 @@ void Game::displayGameGuide() {
 };
 
 void Game::config() {
+    // Config map grid based on game settings
+    switch (gameSettings->getMapGrid()) {
+        case Level::NORMAL:
+            map = new Map(4, 4);
+            break;
+        case Level::HARD:
+            map = new Map(5, 5);
+            break;
+        default:
+            map = new Map(3, 3);
+    }
 
+    // Config difficulty level based on game settings
 };
 
 void Game::handleInput() {
@@ -101,6 +115,7 @@ void Game::run() {
     switch (mainMenuSelection) {
         case 2:
             // config game settings
+
             break;
         case 3:
             // get data from saved txt file
@@ -113,16 +128,14 @@ void Game::run() {
             return;
     }
 
-    // Game loop
-    // Display map
-    // Prompt user input
-    // Process user input (validate input, go to next step if input is valid, otherwise, re-prompt
-    // Update player and enemies components
-    // Render
+    start();
 
     // Post-game
     // Display main menu
 };
 
+void Game::start() {
+    config();
+}
 
 

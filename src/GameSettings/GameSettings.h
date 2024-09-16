@@ -1,9 +1,12 @@
 #ifndef GAMESETTINGS_H
 #define GAMESETTINGS_H
 
+#include "../Enums/Enums.h"
+using namespace Enums;
+
 class GameSettings {
-    int difficulty = 1;
-    int mapGrid = 1;
+    int difficulty = Level::EASY;
+    int mapGrid = Level::EASY;
 
 public:
     int getDifficulty() const;
