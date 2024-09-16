@@ -9,7 +9,7 @@ Map::Map(uint8_t w, uint8_t h)
         for (uint8_t x = 0; x < width; x++) {
             // emplace allows constructing a pair and a vector directly inside the map
             // without creating temporary objects.
-            graph.emplace(make_pair(x, y), vector<pair<uint8_t, uint8_t>>{});
+            graph.emplace(make_pair(x, y), set<pair<uint8_t, uint8_t>>{});
         }
     }
 
@@ -34,8 +34,8 @@ Map::Map(uint8_t w, uint8_t h)
             if (Utils::getRandomSelection<bool>(visit) || i == neighbourNumber - 1 || neighbors[i] == dest) {
                 // Add neighbour to the path
                 winningPath.insert(neighbors[i]);
-                graph[currentVertex].push_back(neighbors[i]);
-                graph[neighbors[i]].push_back(currentVertex);
+                graph[currentVertex].insert(neighbors[i]);
+                graph[neighbors[i]].insert(currentVertex);
                 currentVertex = neighbors[i];
                 break;
             }
@@ -69,8 +69,8 @@ Map::Map(uint8_t w, uint8_t h)
             for (uint8_t i = 0; i < neighbourSize; i++) {
                 if (Utils::getRandomSelection<bool>(visit) || i == neighbourSize - 1) {
                     bool isDisconnectedNeighbour = isDisconnected(neighbours[i]);
-                    graph[currentVertex].push_back(neighbours[i]);
-                    graph[neighbours[i]].push_back(currentVertex);
+                    graph[currentVertex].insert(neighbours[i]);
+                    graph[neighbours[i]].insert(currentVertex);
 
                     if (isDisconnectedNeighbour) {
                         currentVertex = neighbours[i];
@@ -85,7 +85,7 @@ Map::Map(uint8_t w, uint8_t h)
     cout << "{" << endl;
     for (auto &graphIt: graph) {
         const pair<uint8_t, uint8_t> &vertex = graphIt.first;
-        const vector<pair<uint8_t, uint8_t>> &connectedNeighbors = graphIt.second;
+        const set<pair<uint8_t, uint8_t>> &connectedNeighbors = graphIt.second;
 
         cout << "(" << static_cast<int>(vertex.first) << ", " << static_cast<int>(vertex.second) << "): ";
         cout << "[";
@@ -99,14 +99,41 @@ Map::Map(uint8_t w, uint8_t h)
 
 void Map::draw() {
     // Draw 'walls' along the graph to create a map
+    string map;
 
+    for (uint8_t i = 0; i < width; i++) {
+        map += " ___ ";
+    }
+
+    for (uint8_t y = 0; y < height; y++) {
+        map += "\n";
+        for (uint8_t x = 0; x < width; x++) {
+            if (x == 0 || graph[make_pair(x - 1, y)].count(make_pair(x, y)) == 0) {
+                map += "|";
+            } else {
+                map += " ";
+            }
+
+            if (y == height - 1 || graph[make_pair(x, y)].count(make_pair(x, y + 1)) == 0) {
+                map += "___ ";
+            } else {
+                map += "    ";
+            }
+
+            if (x == width - 1) {
+                map += "|";
+            }
+        }
+    }
+
+    cout << map << endl;
 }
 
 uint8_t Map::getWidth() const { return width; }
 
 uint8_t Map::getHeight() const { return height; }
 
-const map<pair<uint8_t, uint8_t>, vector<pair<uint8_t, uint8_t>>> &Map::getGraph() const {
+const map<pair<uint8_t, uint8_t>, set<pair<uint8_t, uint8_t>>> &Map::getGraph() const {
     return graph;
 }
 

@@ -13,7 +13,7 @@ using namespace std;
 class Map {
     uint8_t width;
     uint8_t height;
-    map<pair<uint8_t, uint8_t>, vector<pair<uint8_t, uint8_t>>> graph;
+    map<pair<uint8_t, uint8_t>, set<pair<uint8_t, uint8_t>>> graph;
     set<pair<uint8_t, uint8_t>> winningPath;
 
 public:
@@ -21,7 +21,7 @@ public:
 
     void draw();
 
-    const map<pair<uint8_t, uint8_t>, vector<pair<uint8_t, uint8_t>>> &getGraph() const;
+    const map<pair<uint8_t, uint8_t>, set<pair<uint8_t, uint8_t>>> &getGraph() const;
 
     const set<pair<uint8_t, uint8_t>> &getWinningPath() const;
 
