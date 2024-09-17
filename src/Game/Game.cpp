@@ -1,6 +1,12 @@
 #include <iostream>
+#include <thread>
+#include <chrono>
+#include <cstdlib>
+#include <unistd.h>
+
 #include "Game.h"
 #include "../Enums/Enums.h"
+#include "../Utils/Utils.h"
 
 using namespace std;
 using namespace Enums;
@@ -21,7 +27,8 @@ Game::Game()
                                   "1. 5x5\n"
                                   "2. 10x10\n"
                                   "3. 15x15")),
-          gameSettings(new GameSettings()) {}
+          gameSettings(new GameSettings()),
+          countdownClock(5) {}
 //, optionMenu(new GameOptionMenu())
 //, collisionSystem(new CollisionSystem())
 //, renderSystem(new RenderSystem())
@@ -76,6 +83,14 @@ void Game::config() {
     }
 
     // Config difficulty level based on game settings
+    switch (gameSettings->getDifficulty()) {
+        case Level::NORMAL:
+            setCountdownClock(7);
+            break;
+        case Level::HARD:
+            setCountdownClock(5);
+            break;
+    }
 };
 
 void Game::handleInput() {
@@ -136,6 +151,46 @@ void Game::run() {
 
 void Game::start() {
     config();
+    bool isRunning = true;
+
+    // Display map for the countdown amount of time
+    map->draw();
+    cout << "Map will disappear after " << static_cast<int>(countdownClock) << " seconds..." << endl;
+    this_thread::sleep_for(chrono::seconds(5));
+
+    // Clear map from the terminal
+    // Consider another version for Windows
+//    int res = system("clear");
+//    cout << res << endl;
+    std::cout << "TERM: " << getenv("TERM") << std::endl;
+    system("clear");
+
+//    // Accepting non-blocking keyboard input
+//    // Consider another version for Windows
+//    Utils::setNonBlockingInput(true);
+//    cout << "Please enter your moves consecutively: " << endl;
+//    char move;
+//    uint8_t counter = 5;
+//
+//    while (counter >= 0) {
+//        move = getchar();       // Get input without blocking
+//        if (move != EOF) {
+//            cout << move << endl;
+//            counter--;
+//            break;
+//        }
+//        usleep(10000);              // Sleep to prevent CPU overuse
+//    }
+//
+//    Utils::setNonBlockingInput(false);
+}
+
+uint8_t Game::getCountdownClock() const {
+    return countdownClock;
+}
+
+void Game::setCountdownClock(uint8_t sec) {
+    countdownClock = sec;
 }
 
 

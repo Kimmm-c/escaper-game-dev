@@ -82,19 +82,19 @@ Map::Map(uint8_t w, uint8_t h)
         }
     }
 
-    cout << "{" << endl;
-    for (auto &graphIt: graph) {
-        const pair<uint8_t, uint8_t> &vertex = graphIt.first;
-        const set<pair<uint8_t, uint8_t>> &connectedNeighbors = graphIt.second;
-
-        cout << "(" << static_cast<int>(vertex.first) << ", " << static_cast<int>(vertex.second) << "): ";
-        cout << "[";
-        for (pair<uint8_t, uint8_t> neighbour: connectedNeighbors) {
-            cout << "(" << static_cast<int>(neighbour.first) << ", " << static_cast<int>(neighbour.second) << "), ";
-        }
-        cout << "]," << endl;
-    }
-    cout << "}" << endl;
+//    cout << "{" << endl;
+//    for (auto &graphIt: graph) {
+//        const pair<uint8_t, uint8_t> &vertex = graphIt.first;
+//        const set<pair<uint8_t, uint8_t>> &connectedNeighbors = graphIt.second;
+//
+//        cout << "(" << static_cast<int>(vertex.first) << ", " << static_cast<int>(vertex.second) << "): ";
+//        cout << "[";
+//        for (pair<uint8_t, uint8_t> neighbour: connectedNeighbors) {
+//            cout << "(" << static_cast<int>(neighbour.first) << ", " << static_cast<int>(neighbour.second) << "), ";
+//        }
+//        cout << "]," << endl;
+//    }
+//    cout << "}" << endl;
 }
 
 void Map::draw() {

@@ -18,6 +18,7 @@ class Game {
 //    CollisionSystem* collisionSystem;
 //    PhysicSystem* physicSystem;
 //    RenderSystem* renderSystem;
+    uint8_t countdownClock;
 
 public:
     Game();
@@ -33,7 +34,8 @@ public:
     void start();
 
 private:
-
+    void setCountdownClock(uint8_t sec);
+    uint8_t getCountdownClock() const;
 };
 
 #endif
