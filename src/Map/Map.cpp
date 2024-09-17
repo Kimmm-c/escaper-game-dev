@@ -9,7 +9,7 @@ Map::Map(uint8_t w, uint8_t h)
         for (uint8_t x = 0; x < width; x++) {
             // emplace allows constructing a pair and a vector directly inside the map
             // without creating temporary objects.
-            graph.emplace(make_pair(x, y), set<pair<uint8_t, uint8_t>>{});
+            graph.emplace(make_pair(x, y), set<pair<uint8_t, uint8_t> >{});
         }
     }
 
@@ -21,7 +21,7 @@ Map::Map(uint8_t w, uint8_t h)
     winningPath.insert(currentVertex);
 
     while (currentVertex != dest) {
-        vector<pair<uint8_t, uint8_t>> neighbors = getNeighbours(currentVertex);
+        vector<pair<uint8_t, uint8_t> > neighbors = getNeighbours(currentVertex);
 
         // Filter out invalid neighbors
         filterByCoordinate(neighbors);
@@ -60,7 +60,7 @@ Map::Map(uint8_t w, uint8_t h)
          * If the current vertex is disconnected, visit the next valid neighbour until it hits a connected neighbour.
          */
         while (isDisconnected(currentVertex)) {
-            vector<pair<uint8_t, uint8_t>> neighbours = getNeighbours(currentVertex);
+            vector<pair<uint8_t, uint8_t> > neighbours = getNeighbours(currentVertex);
             filterByCoordinate(neighbours);
             filterByDisconnection(neighbours);
 
@@ -85,7 +85,7 @@ Map::Map(uint8_t w, uint8_t h)
 //    cout << "{" << endl;
 //    for (auto &graphIt: graph) {
 //        const pair<uint8_t, uint8_t> &vertex = graphIt.first;
-//        const set<pair<uint8_t, uint8_t>> &connectedNeighbors = graphIt.second;
+//        const set<pair<uint8_t, uint8_t> > &connectedNeighbors = graphIt.second;
 //
 //        cout << "(" << static_cast<int>(vertex.first) << ", " << static_cast<int>(vertex.second) << "): ";
 //        cout << "[";
@@ -133,23 +133,23 @@ uint8_t Map::getWidth() const { return width; }
 
 uint8_t Map::getHeight() const { return height; }
 
-const map<pair<uint8_t, uint8_t>, set<pair<uint8_t, uint8_t>>> &Map::getGraph() const {
+const map<pair<uint8_t, uint8_t>, set<pair<uint8_t, uint8_t> > > &Map::getGraph() const {
     return graph;
 }
 
-const set<pair<uint8_t, uint8_t>> &Map::getWinningPath() const {
+const set<pair<uint8_t, uint8_t> > &Map::getWinningPath() const {
     return winningPath;
 }
 
-vector<pair<uint8_t, uint8_t>> Map::getNeighbours(const pair<uint8_t, uint8_t> &vertex) const {
-    vector<pair<uint8_t, uint8_t>> neighbours = {make_pair(vertex.first - 1, vertex.second),
+vector<pair<uint8_t, uint8_t> > Map::getNeighbours(const pair<uint8_t, uint8_t> &vertex) const {
+    vector<pair<uint8_t, uint8_t> > neighbours = {make_pair(vertex.first - 1, vertex.second),
                                                  make_pair(vertex.first + 1, vertex.second),
                                                  make_pair(vertex.first, vertex.second - 1),
                                                  make_pair(vertex.first, vertex.second + 1)};
     return neighbours;
 }
 
-void Map::filterByVisit(vector<pair<uint8_t, uint8_t>> &neighbors) {
+void Map::filterByVisit(vector<pair<uint8_t, uint8_t> > &neighbors) {
     uint8_t i = 0;
 
     while (i < neighbors.size()) {
@@ -161,7 +161,7 @@ void Map::filterByVisit(vector<pair<uint8_t, uint8_t>> &neighbors) {
     }
 }
 
-void Map::filterByCoordinate(vector<pair<uint8_t, uint8_t>> &neighbors) {
+void Map::filterByCoordinate(vector<pair<uint8_t, uint8_t> > &neighbors) {
     uint8_t i = 0;
 
     while (i < neighbors.size()) {
@@ -173,7 +173,7 @@ void Map::filterByCoordinate(vector<pair<uint8_t, uint8_t>> &neighbors) {
     }
 }
 
-void Map::filterByDeadEnd(pair<uint8_t, uint8_t> &currentVertex, vector<pair<uint8_t, uint8_t>> &neighbors) {
+void Map::filterByDeadEnd(pair<uint8_t, uint8_t> &currentVertex, vector<pair<uint8_t, uint8_t> > &neighbors) {
     uint8_t i = 0;
 
     while (i < neighbors.size()) {
@@ -185,7 +185,7 @@ void Map::filterByDeadEnd(pair<uint8_t, uint8_t> &currentVertex, vector<pair<uin
     }
 }
 
-void Map::filterByDisconnection(vector<pair<uint8_t, uint8_t>> &neighbors) {
+void Map::filterByDisconnection(vector<pair<uint8_t, uint8_t> > &neighbors) {
     uint8_t i = 0;
 
     while (i < neighbors.size()) {
@@ -204,7 +204,7 @@ bool Map::isValidCoordinate(pair<uint8_t, uint8_t> &vertex, uint8_t width, uint8
              || vertex.second >= height);
 }
 
-bool Map::isVisited(pair<uint8_t, uint8_t> &vertex, set<pair<uint8_t, uint8_t>> &path) const {
+bool Map::isVisited(pair<uint8_t, uint8_t> &vertex, set<pair<uint8_t, uint8_t> > &path) const {
     return path.count(vertex) > 0;
 }
 

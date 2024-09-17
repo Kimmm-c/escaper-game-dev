@@ -160,29 +160,28 @@ void Game::start() {
 
     // Clear map from the terminal
     // Consider another version for Windows
-//    int res = system("clear");
-//    cout << res << endl;
-    std::cout << "TERM: " << getenv("TERM") << std::endl;
+    setenv("TERM", "xterm-256color", 1);
     system("clear");
 
-//    // Accepting non-blocking keyboard input
-//    // Consider another version for Windows
-//    Utils::setNonBlockingInput(true);
-//    cout << "Please enter your moves consecutively: " << endl;
-//    char move;
-//    uint8_t counter = 5;
-//
-//    while (counter >= 0) {
-//        move = getchar();       // Get input without blocking
-//        if (move != EOF) {
-//            cout << move << endl;
-//            counter--;
-//            break;
-//        }
-//        usleep(10000);              // Sleep to prevent CPU overuse
-//    }
-//
-//    Utils::setNonBlockingInput(false);
+    // Accepting non-blocking keyboard input
+    // Consider another version for Windows
+    Utils::setNonBlockingInput(true);
+    cout << "Please enter your moves consecutively: " << endl;
+    char move;
+
+    while (isRunning) {
+        move = getchar();       // Get input without blocking
+        if (move != EOF) {
+            // If user enter a move
+            // Validate the move
+            // Display the move as arrow on the console
+            // Use physic engine to detect collision using current position and next visited position
+            cout << move << endl;
+        }
+        usleep(10000);              // Sleep to prevent CPU overuse
+    }
+
+    Utils::setNonBlockingInput(false);
 }
 
 uint8_t Game::getCountdownClock() const {
