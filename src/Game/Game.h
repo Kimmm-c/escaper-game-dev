@@ -10,13 +10,14 @@ class Game {
     const GameMenu* mainMenu;
     const GameMenu* difficultyMenu;
     const GameMenu* mapMenu;
+    const GameMenu* midGameMenu;
     GameSettings* gameSettings;
     Map* map;
     Player* player;
     PhysicEngine* physicEngine;
     uint8_t countdownClock;
+    int gameState;
 
-//    GameOptionMenu optionMenu;
 //    Enemy* enemies;
 //    Map map;
 //    CollisionSystem* collisionSystem;
@@ -26,15 +27,14 @@ class Game {
 public:
     Game();
     ~Game();
+    void gameInit();
     int getUserSelection(const GameMenu* menu);
     void displayGameGuide();
     void setDifficultyLevel();
     void config();
-    void handleInput();
-    void update();
-    void render();
     void run();
     void start();
+    int restart();
 
 private:
     void setCountdownClock(uint8_t sec);

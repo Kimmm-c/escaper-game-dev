@@ -18,7 +18,8 @@ namespace Enums {
     enum GameState {
         WIN,
         LOSE,
-        EXIT
+        EXIT,
+        RESTART
     };
 };
 

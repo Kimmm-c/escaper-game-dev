@@ -28,22 +28,25 @@ Game::Game()
                                   "1. 5x5\n"
                                   "2. 10x10\n"
                                   "3. 15x15")),
+          midGameMenu(new GameMenu(3, "Please choose one of the following options to proceed:\n"
+                                  "1. Save & Exit\n"
+                                  "2. Exit\n"
+                                  "3. Start a New Game\n"
+                                  "4. Resume")),
           gameSettings(new GameSettings()),
           physicEngine(new PhysicEngine()),
           player(new Player(0, 0)),
           countdownClock(5) {}
-//, optionMenu(new GameOptionMenu())
-//, collisionSystem(new CollisionSystem())
-//, renderSystem(new RenderSystem())
 
 Game::~Game() {
     delete mainMenu;
     delete difficultyMenu;
     delete mapMenu;
     delete gameSettings;
-//    delete optionMenu;
-//    delete collisionSystem;
-//    delete renderSystem;
+    delete midGameMenu;
+    delete physicEngine;
+    delete map;
+    delete player;
 };
 
 int Game::getUserSelection(const GameMenu *menu) {
@@ -96,20 +99,7 @@ void Game::config() {
     }
 };
 
-void Game::handleInput() {
-
-};
-
-void Game::update() {
-
-};
-
-void Game::render() {
-
-};
-
-void Game::run() {
-    // Pre-game
+void Game::gameInit() {
     int difficulty;
     int mapGrid;
 
@@ -132,8 +122,7 @@ void Game::run() {
 
     switch (mainMenuSelection) {
         case 2:
-            // config game settings
-
+            config();
             break;
         case 3:
             // get data from saved txt file
@@ -141,24 +130,44 @@ void Game::run() {
             // config game settings with the saved data
 
             break;
-
         case 6:
-            return;
+            exit(0);
+    }
+}
+
+void Game::run() {
+    gameInit();
+
+    bool isRunning = true;
+
+    while (isRunning) {
+        start();
+
+        if (gameState == GameState::RESTART) {
+            gameInit();
+        } else {
+            isRunning = false;
+        }
     }
 
-    start();
-
-    // Post-game
-    // Display main menu
+    switch (gameState) {
+        case GameState::WIN:
+            cout << "YOU WIN!!!" << endl;
+            break;
+        case GameState::LOSE:
+            cout << "YOU LOSE..." << endl;
+            break;
+        case GameState::EXIT:
+            cout << "Exiting game..." << endl;
+            break;
+    }
 };
 
 void Game::start() {
-    config();
     pair<uint8_t, uint8_t> dest = getDestination();
     bool isRunning = true;
     bool isCollided;
     int direction;
-    int state;
 
     // Display map for the countdown amount of time
     map->draw();
@@ -220,34 +229,45 @@ void Game::start() {
 
                 // If there is collision, set game state to Lose. Else, update the player's position.
                 if (isCollided) {
-                    state = GameState::LOSE;
+                    gameState = GameState::LOSE;
                     isRunning = false;
                 } else {
                     player->setPosition(map->getNextPosition(player->getPosition(), direction));
                     // If, after updating the position, player arrives at the destination, set game state to Win.
                     if (player->getPosition() == dest) {
-                        state = GameState::WIN;
+                        gameState = GameState::WIN;
                         isRunning = false;
                     }
                 }
             } else if (move == 'q') {
-                cout << "Displaying mid-game menu..." << endl;
+                Utils::setNonBlockingInput(false);
+
+                int selection = getUserSelection(midGameMenu);
+
+                switch (selection) {
+                    case 1:
+                        // Save data
+                        cout << "Saving game..." << endl;
+                        gameState = GameState::EXIT;
+                        isRunning = false;
+                        break;
+                    case 2:
+                        gameState = GameState::EXIT;
+                        isRunning = false;
+                        break;
+                    case 3:
+                        gameState = GameState::RESTART;
+                        break;
+                    case 4:
+                        Utils::setNonBlockingInput(true);
+                        break;
+                }
+
             } else {
                 cout << "Invalid input." << endl;
             }
         }
         usleep(10000); // Sleep to prevent CPU overuse
-    }
-
-    switch (state) {
-        case GameState::WIN:
-            cout << "YOU WIN!!!" << endl;
-            break;
-        case GameState::LOSE:
-            cout << "YOU LOSE!!" << endl;
-            break;
-        default:
-            cout << "Exiting the game..." << endl;
     }
 
     Utils::setNonBlockingInput(false);
