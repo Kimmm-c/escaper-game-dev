@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <termios.h>
 #include <fcntl.h>
+#include <iostream>
 
 void Utils::setNonBlockingInput(bool enable) {
     /*
@@ -20,6 +21,8 @@ void Utils::setNonBlockingInput(bool enable) {
     // from STDIN_FILENO and store it in ttystate, which represents a terminal
     tcgetattr(STDIN_FILENO, &ttystate);
 
+    int flags = fcntl(STDIN_FILENO, F_GETFL, 0); // 0 is the dummy value because there is no argument needed to perform F_GETFL
+
     if (enable) {
         // c_lflag: A set of bits, where each bit represents a terminal mode.
         // We use bitwise operator to Enable/Disable a terminal mode.
@@ -34,13 +37,13 @@ void Utils::setNonBlockingInput(bool enable) {
         // fcntl() is used to manipulate file descriptor.
         // To set the std input to non-blocking, we first retrieves the flags from the file descriptor using the command F_GETFL.
         // Then we set the bit representing non-blocking to 1 by using the bitwise operator | in conjunction with 0_NONBLOCK.
-        int flags = fcntl(STDIN_FILENO, F_GETFL, 0);    // 0 is the dummy value because there is no argument needed to perform F_GETFL.
         fcntl(STDIN_FILENO, F_SETFL, flags | O_NONBLOCK);
     } else {
         // Restore the original terminal settings
         ttystate.c_lflag |= ICANON;
         ttystate.c_lflag |= ECHO;
         tcsetattr(STDIN_FILENO, TCSANOW, &ttystate);
+        fcntl(STDIN_FILENO, F_SETFL, flags & ~O_NONBLOCK);
     }
 
 }

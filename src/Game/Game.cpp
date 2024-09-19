@@ -28,7 +28,7 @@ Game::Game()
                                   "1. 5x5\n"
                                   "2. 10x10\n"
                                   "3. 15x15")),
-          midGameMenu(new GameMenu(3, "Please choose one of the following options to proceed:\n"
+          midGameMenu(new GameMenu(4, "Please choose one of the following options to proceed:\n"
                                   "1. Save & Exit\n"
                                   "2. Exit\n"
                                   "3. Start a New Game\n"
@@ -64,7 +64,7 @@ int Game::getUserSelection(const GameMenu *menu) {
         // OR the entire buffer size (streamsize).
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Invalid input. Please enter a number from 1-6" << endl;
+        cout << "Invalid input. Please enter a number from 1 to " << menu->getMenuOption() << endl;
         cin >> menuSelection;
     }
 
@@ -257,8 +257,10 @@ void Game::start() {
                         break;
                     case 3:
                         gameState = GameState::RESTART;
+                        isRunning = false;
                         break;
                     case 4:
+                        cout << "Please continue with the moves..." << endl;
                         Utils::setNonBlockingInput(true);
                         break;
                 }
