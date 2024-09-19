@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "../Enums/Enums.h"
 #include "../Utils/Utils.h"
+#include "../Player/Player.h"
 
 using namespace std;
 using namespace Enums;
@@ -28,6 +29,8 @@ Game::Game()
                                   "2. 10x10\n"
                                   "3. 15x15")),
           gameSettings(new GameSettings()),
+          physicEngine(new PhysicEngine()),
+          player(new Player(0, 0)),
           countdownClock(5) {}
 //, optionMenu(new GameOptionMenu())
 //, collisionSystem(new CollisionSystem())
@@ -151,7 +154,11 @@ void Game::run() {
 
 void Game::start() {
     config();
+    pair<uint8_t, uint8_t> dest = getDestination();
     bool isRunning = true;
+    bool isCollided;
+    int direction;
+    int state;
 
     // Display map for the countdown amount of time
     map->draw();
@@ -160,8 +167,8 @@ void Game::start() {
 
     // Clear map from the terminal
     // Consider another version for Windows
-    setenv("TERM", "xterm-256color", 1);
-    system("clear");
+//    setenv("TERM", "xterm-256color", 1);
+//    system("clear");
 
     // Accepting non-blocking keyboard input
     // Consider another version for Windows
@@ -169,16 +176,78 @@ void Game::start() {
     cout << "Please enter your moves consecutively: " << endl;
     char move;
 
+    // If user enter a move
+    // Validate the move
+    // Display the move as arrow on the console
+    // Use physic engine to detect collision using current position and next visited position
     while (isRunning) {
         move = getchar();       // Get input without blocking
         if (move != EOF) {
-            // If user enter a move
-            // Validate the move
-            // Display the move as arrow on the console
-            // Use physic engine to detect collision using current position and next visited position
-            cout << move << endl;
+            /*
+             * Arrow input is represented by an escape character '\033' followed by a sequence of characters,
+             * which is usually '[A', where 'A' is the actual arrow key code.
+             * Up:      '\033[A'
+             * Down:    '\033[B'
+             * Right:   '\033[C'
+             * Left:    '\033[D'
+             */
+            if (move == '\033') {
+                getchar();          // Skip the '[' character
+                move = getchar();   // Get the actual arrow key code
+
+                switch (move) {
+                    case 'A':
+                        cout << "up" << endl;
+                        direction = Direction::UP;
+                        break;
+                    case 'B':
+                        cout << "down" << endl;
+                        direction = Direction::DOWN;
+                        break;
+                    case 'C':
+                        cout << "right" << endl;
+                        direction = Direction::RIGHT;
+                        break;
+                    case 'D':
+                        cout << "left" << endl;
+                        direction = Direction::LEFT;
+                        break;
+                    default:
+                        cout << "Invalid input." << endl;
+                }
+
+                isCollided = physicEngine->detectCollision(player->getPosition(), direction, map);
+
+                // If there is collision, set game state to Lose. Else, update the player's position.
+                if (isCollided) {
+                    state = GameState::LOSE;
+                    isRunning = false;
+                } else {
+                    player->setPosition(map->getNextPosition(player->getPosition(), direction));
+                    // If, after updating the position, player arrives at the destination, set game state to Win.
+                    if (player->getPosition() == dest) {
+                        state = GameState::WIN;
+                        isRunning = false;
+                    }
+                }
+            } else if (move == 'q') {
+                cout << "Displaying mid-game menu..." << endl;
+            } else {
+                cout << "Invalid input." << endl;
+            }
         }
-        usleep(10000);              // Sleep to prevent CPU overuse
+        usleep(10000); // Sleep to prevent CPU overuse
+    }
+
+    switch (state) {
+        case GameState::WIN:
+            cout << "YOU WIN!!!" << endl;
+            break;
+        case GameState::LOSE:
+            cout << "YOU LOSE!!" << endl;
+            break;
+        default:
+            cout << "Exiting the game..." << endl;
     }
 
     Utils::setNonBlockingInput(false);
@@ -190,6 +259,10 @@ uint8_t Game::getCountdownClock() const {
 
 void Game::setCountdownClock(uint8_t sec) {
     countdownClock = sec;
+}
+
+pair<uint8_t, uint8_t> Game::getDestination() const {
+    return make_pair(map->getWidth() - 1, map->getHeight() -1);
 }
 
 

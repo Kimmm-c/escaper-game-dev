@@ -7,6 +7,19 @@ namespace Enums {
         NORMAL,
         HARD
     };
+
+    enum Direction {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    };
+
+    enum GameState {
+        WIN,
+        LOSE,
+        EXIT
+    };
 };
 
 

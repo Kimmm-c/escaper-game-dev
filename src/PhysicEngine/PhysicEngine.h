@@ -2,11 +2,12 @@
 #define PHYSIC_ENGINE_H
 
 #include "../Player/Player.h"
+#include "../Map/Map.h"
 
 class PhysicEngine {
 
 public:
-    void detectCollision(Player player, BaseCharacter* enemies);
+    bool detectCollision(const pair<uint8_t, uint8_t> &currentPosition, int direction, const Map *map) const;
 };
 
 #endif

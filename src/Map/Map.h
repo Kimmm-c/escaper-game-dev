@@ -26,6 +26,8 @@ public:
 
     vector<pair<uint8_t, uint8_t> > getNeighbours(const pair<uint8_t, uint8_t> &vertex) const;
 
+    pair<uint8_t, uint8_t> getNextPosition(const pair<uint8_t, uint8_t> &currentPosition, int direction) const;
+
     bool isValidCoordinate(pair<uint8_t, uint8_t> &vertex, uint8_t width, uint8_t height) const;
 
     bool isVisited(pair<uint8_t, uint8_t> &vertex, set<pair<uint8_t, uint8_t> > &path) const;
@@ -34,11 +36,13 @@ public:
 
     bool isDisconnected(const pair<uint8_t, uint8_t> &vertex);
 
-private:
+    bool hasEdge(const pair<uint8_t, uint8_t> &vertex1, const pair<uint8_t, uint8_t> &vertex2);
+
     uint8_t getWidth() const;
 
     uint8_t getHeight() const;
 
+private:
     void filterByCoordinate(vector<pair<uint8_t, uint8_t> > &neighbors);
 
     void filterByVisit(vector<pair<uint8_t, uint8_t> > &neighbors);

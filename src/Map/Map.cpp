@@ -1,6 +1,10 @@
+#include <iostream>
+
 #include "Map.h"
 #include "../Utils/Utils.h"
-#include <iostream>
+#include "../Enums/Enums.h"
+
+using namespace Enums;
 
 Map::Map(uint8_t w, uint8_t h)
         : width(w), height(h) {
@@ -82,19 +86,19 @@ Map::Map(uint8_t w, uint8_t h)
         }
     }
 
-//    cout << "{" << endl;
-//    for (auto &graphIt: graph) {
-//        const pair<uint8_t, uint8_t> &vertex = graphIt.first;
-//        const set<pair<uint8_t, uint8_t> > &connectedNeighbors = graphIt.second;
-//
-//        cout << "(" << static_cast<int>(vertex.first) << ", " << static_cast<int>(vertex.second) << "): ";
-//        cout << "[";
-//        for (pair<uint8_t, uint8_t> neighbour: connectedNeighbors) {
-//            cout << "(" << static_cast<int>(neighbour.first) << ", " << static_cast<int>(neighbour.second) << "), ";
-//        }
-//        cout << "]," << endl;
-//    }
-//    cout << "}" << endl;
+    cout << "{" << endl;
+    for (auto &graphIt: graph) {
+        const pair<uint8_t, uint8_t> &vertex = graphIt.first;
+        const set<pair<uint8_t, uint8_t> > &connectedNeighbors = graphIt.second;
+
+        cout << "(" << static_cast<int>(vertex.first) << ", " << static_cast<int>(vertex.second) << "): ";
+        cout << "[";
+        for (pair<uint8_t, uint8_t> neighbour: connectedNeighbors) {
+            cout << "(" << static_cast<int>(neighbour.first) << ", " << static_cast<int>(neighbour.second) << "), ";
+        }
+        cout << "]," << endl;
+    }
+    cout << "}" << endl;
 }
 
 void Map::draw() {
@@ -224,4 +228,23 @@ bool Map::isDeadEnd(pair<uint8_t, uint8_t> &currentVertex, pair<uint8_t, uint8_t
 
 bool Map::isDisconnected(const pair<uint8_t, uint8_t> &vertex) {
     return graph[vertex].empty();
+}
+
+bool Map::hasEdge(const pair<uint8_t, uint8_t> &vertex1, const pair<uint8_t, uint8_t> &vertex2) {
+    return graph[vertex1].count(vertex2) > 0;
+}
+
+pair<uint8_t, uint8_t> Map::getNextPosition(const pair<uint8_t, uint8_t> &currentPosition, int direction) const {
+    switch (direction) {
+        case Direction::LEFT:
+            return make_pair(currentPosition.first - 1, currentPosition.second);
+        case Direction::RIGHT:
+            return make_pair(currentPosition.first + 1, currentPosition.second);
+        case Direction::UP:
+            return make_pair(currentPosition.first, currentPosition.second - 1);
+        case Direction::DOWN:
+            return make_pair(currentPosition.first, currentPosition.second + 1);
+        default:
+            return make_pair(-1, -1);
+    }
 }

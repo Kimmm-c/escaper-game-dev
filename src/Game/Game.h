@@ -4,6 +4,7 @@
 #include "../GameMenu/GameMenu.h"
 #include "../GameSettings/GameSettings.h"
 #include "../Map/Map.h"
+#include "../PhysicEngine/PhysicEngine.h"
 
 class Game {
     const GameMenu* mainMenu;
@@ -11,14 +12,16 @@ class Game {
     const GameMenu* mapMenu;
     GameSettings* gameSettings;
     Map* map;
+    Player* player;
+    PhysicEngine* physicEngine;
+    uint8_t countdownClock;
+
 //    GameOptionMenu optionMenu;
-//    Player player;
 //    Enemy* enemies;
 //    Map map;
 //    CollisionSystem* collisionSystem;
-//    PhysicSystem* physicSystem;
 //    RenderSystem* renderSystem;
-    uint8_t countdownClock;
+
 
 public:
     Game();
@@ -36,6 +39,7 @@ public:
 private:
     void setCountdownClock(uint8_t sec);
     uint8_t getCountdownClock() const;
+    pair<uint8_t, uint8_t> getDestination() const;
 };
 
 #endif
