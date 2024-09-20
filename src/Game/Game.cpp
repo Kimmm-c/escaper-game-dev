@@ -10,7 +10,6 @@
 
 using namespace std;
 using namespace Enums;
-using namespace cereal;
 
 Game::Game()
         : mainMenu(new GameMenu(5, "Please choose one of the following options to proceed:\n"

@@ -1,10 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <cereal/archives/binary.hpp>
-#include <cereal/types/map.hpp>
-#include <cereal/types/set.hpp>
-
 #include "../GameMenu/GameMenu.h"
 #include "../GameSettings/GameSettings.h"
 #include "../Map/Map.h"
