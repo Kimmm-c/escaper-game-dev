@@ -47,3 +47,7 @@ void Utils::setNonBlockingInput(bool enable) {
     }
 
 }
+
+void Utils::clearInputBuffer() {
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+}

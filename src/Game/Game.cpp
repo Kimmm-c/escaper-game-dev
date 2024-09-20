@@ -178,7 +178,7 @@ void Game::start() {
     // Consider another version for Windows
     Utils::setNonBlockingInput(true);
     cout << "Please enter your moves consecutively: " << endl;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    Utils::clearInputBuffer();
     char move;
 
     // If user enter a move
@@ -256,6 +256,9 @@ void Game::start() {
                     }
                     isRunning = false;
                 }
+
+                Utils::clearInputBuffer();
+
             } else {
                 cout << "Invalid input." << endl;
             }

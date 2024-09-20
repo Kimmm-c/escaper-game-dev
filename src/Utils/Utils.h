@@ -12,6 +12,7 @@ public:
     template<typename T>
     static T getRandomSelection(vector<T>& list);
     static void setNonBlockingInput(bool enable);
+    static void clearInputBuffer();
 };
 
 template<typename T>
