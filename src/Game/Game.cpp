@@ -104,10 +104,10 @@ void Game::gameInit() {
     int mainMenuSelection = getUserSelection(mainMenu);
     cout << "selection: " << mainMenuSelection << endl;
 
-    while (mainMenuSelection == 1 or mainMenuSelection == 4 or mainMenuSelection == 5) {
+    while (mainMenuSelection == 1 or mainMenuSelection == 3 or mainMenuSelection == 4) {
         if (mainMenuSelection == 1) {
             displayGameGuide();
-        } else if (mainMenuSelection == 4) {
+        } else if (mainMenuSelection == 3) {
             difficulty = getUserSelection(difficultyMenu);
             gameSettings->setDifficulty(difficulty);
         } else {
