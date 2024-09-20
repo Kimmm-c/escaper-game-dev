@@ -3,23 +3,22 @@
 #include <chrono>
 #include <cstdlib>
 #include <unistd.h>
+#include <fstream>
 
 #include "Game.h"
-#include "../Enums/Enums.h"
 #include "../Utils/Utils.h"
-#include "../Player/Player.h"
 
 using namespace std;
 using namespace Enums;
+using namespace cereal;
 
 Game::Game()
-        : mainMenu(new GameMenu(6, "Please choose one of the following options to proceed:\n"
+        : mainMenu(new GameMenu(5, "Please choose one of the following options to proceed:\n"
                                    "1. Game Guide\n"
-                                   "2. Start a New Game\n"
-                                   "3. Load Existing Game\n"
-                                   "4. Difficulty\n"
-                                   "5. Map Grid\n"
-                                   "6. Exit")),
+                                   "2. Start Game\n"
+                                   "3. Difficulty\n"
+                                   "4. Map Grid\n"
+                                   "5. Exit")),
           difficultyMenu(new GameMenu(3, "Please choose one of the following options to proceed:\n"
                                          "1. Easy\n"
                                          "2. Normal\n"
@@ -28,11 +27,10 @@ Game::Game()
                                   "1. 5x5\n"
                                   "2. 10x10\n"
                                   "3. 15x15")),
-          midGameMenu(new GameMenu(4, "Please choose one of the following options to proceed:\n"
-                                  "1. Save & Exit\n"
-                                  "2. Exit\n"
-                                  "3. Start a New Game\n"
-                                  "4. Resume")),
+          midGameMenu(new GameMenu(3, "Please choose one of the following options to proceed:\n"
+                                  "1. Exit\n"
+                                  "2. Start a New Game\n"
+                                  "3. Resume")),
           gameSettings(new GameSettings()),
           physicEngine(new PhysicEngine()),
           player(new Player(0, 0)),
@@ -124,14 +122,10 @@ void Game::gameInit() {
         case 2:
             config();
             break;
-        case 3:
-            // get data from saved txt file
-
-            // config game settings with the saved data
-
-            break;
         case 6:
             exit(0);
+        default:
+            cout << "Invalid input." << endl;
     }
 }
 
@@ -176,8 +170,8 @@ void Game::start() {
 
     // Clear map from the terminal
     // Consider another version for Windows
-//    setenv("TERM", "xterm-256color", 1);
-//    system("clear");
+    setenv("TERM", "xterm-256color", 1);
+    system("clear");
 
     // Accepting non-blocking keyboard input
     // Consider another version for Windows
@@ -244,27 +238,22 @@ void Game::start() {
 
                 int selection = getUserSelection(midGameMenu);
 
-                switch (selection) {
-                    case 1:
-                        // Save data
-                        cout << "Saving game..." << endl;
-                        gameState = GameState::EXIT;
-                        isRunning = false;
-                        break;
-                    case 2:
-                        gameState = GameState::EXIT;
-                        isRunning = false;
-                        break;
-                    case 3:
-                        gameState = GameState::RESTART;
-                        isRunning = false;
-                        break;
-                    case 4:
-                        cout << "Please continue with the moves..." << endl;
-                        Utils::setNonBlockingInput(true);
-                        break;
+                if (selection == 4) {
+                    cout << "Please continue with the moves..." << endl;
+                    Utils::setNonBlockingInput(true);
+                } else {
+                    switch (selection) {
+                        case 1:
+                            gameState = GameState::EXIT;
+                            break;
+                        case 2:
+                            gameState = GameState::RESTART;
+                            break;
+                        default:
+                            cout << "Something is wrong..." << endl;
+                    }
+                    isRunning = false;
                 }
-
             } else {
                 cout << "Invalid input." << endl;
             }
@@ -286,5 +275,4 @@ void Game::setCountdownClock(uint8_t sec) {
 pair<uint8_t, uint8_t> Game::getDestination() const {
     return make_pair(map->getWidth() - 1, map->getHeight() -1);
 }
-
 

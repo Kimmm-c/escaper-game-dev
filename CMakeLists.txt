@@ -28,4 +28,8 @@ add_executable(escaper_text_based_game src/main.cpp
         src/Utils/Utils.h
         src/Utils/Utils.cpp
         src/Enums/Enums.h
+        src/GameState/GameState.h
+        src/GameState/GameState.cpp
 )
+
+target_include_directories(escaper_text_based_game PRIVATE src/include)
