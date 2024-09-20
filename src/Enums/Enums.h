@@ -3,9 +3,9 @@
 
 namespace Enums {
     enum Level {
-        EASY,
-        NORMAL,
-        HARD
+        EASY = 1,
+        NORMAL = 2,
+        HARD = 3
     };
 
     enum Direction {
