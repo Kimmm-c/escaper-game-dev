@@ -23,9 +23,9 @@ Game::Game()
                                          "2. Normal\n"
                                          "3. Hard")),
           mapMenu(new GameMenu(3, "Please choose one of the following options to proceed:\n"
-                                  "1. 5x5\n"
-                                  "2. 10x10\n"
-                                  "3. 15x15")),
+                                  "1. 3x3\n"
+                                  "2. 4x4\n"
+                                  "3. 5x5")),
           midGameMenu(new GameMenu(3, "Please choose one of the following options to proceed:\n"
                                   "1. Exit\n"
                                   "2. Start a New Game\n"
@@ -93,6 +93,8 @@ void Game::config() {
         case Level::HARD:
             setCountdownClock(5);
             break;
+        default:
+            setCountdownClock(10);
     }
 };
 
@@ -176,6 +178,7 @@ void Game::start() {
     // Consider another version for Windows
     Utils::setNonBlockingInput(true);
     cout << "Please enter your moves consecutively: " << endl;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     char move;
 
     // If user enter a move
