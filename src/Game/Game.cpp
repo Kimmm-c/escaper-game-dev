@@ -240,7 +240,7 @@ void Game::start() {
 
                 int selection = getUserSelection(midGameMenu);
 
-                if (selection == 4) {
+                if (selection == 3) {
                     cout << "Please continue with the moves..." << endl;
                     Utils::setNonBlockingInput(true);
                 } else {
