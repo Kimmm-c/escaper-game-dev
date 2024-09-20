@@ -42,6 +42,8 @@ public:
 
     uint8_t getHeight() const;
 
+    void printGraph() const;
+
 private:
     void filterByCoordinate(vector<pair<uint8_t, uint8_t> > &neighbors);
 
